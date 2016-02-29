@@ -12,17 +12,17 @@ Allele consAlleleVide()
     return newAllele;
 }
 
-Personne consPersonneVide()
+Individu consIndividuVide()
 {
-    Personne newPersonne;
-    newPersonne.genome = NULL;
-    newPersonne.id = -1;
-    newPersonne.nbAllele = -1;
-    newPersonne.score = -1;
-    newPersonne.lenght = -1;
-    newPersonne.budget = -1;
+    Individu newIndividu;
+    newIndividu.genome = NULL;
+    newIndividu.id = -1;
+    newIndividu.nbAllele = -1;
+    newIndividu.score = -1;
+    newIndividu.lenght = -1;
+    newIndividu.budget = -1;
 
-    return newPersonne;
+    return newIndividu;
 }
 
 Population consPopulationVide()
@@ -34,7 +34,7 @@ Population consPopulationVide()
     return newPopulation;
 }
 
-ElementListePopulation* consElementListePopulation(Personne personne)
+ElementListePopulation* consElementListePopulation(Individu individu)
 {
     ElementListePopulation* newElement = (ElementListePopulation*)malloc(sizeof(ElementListePopulation));
     if(newElement == NULL)
@@ -42,7 +42,7 @@ ElementListePopulation* consElementListePopulation(Personne personne)
         perror("Allocation du maillon de chaine (consElementListePopulation) impossible");
         exit(-1);
     }
-    newElement->personne = personne;
+    newElement->individu = individu;
     newElement->psuivant = NULL;
 
     return newElement;
@@ -57,40 +57,40 @@ ListePopulation consListePopulationvide()
     return newListe;
 }
 
-ListePopulation ajoutListePopulationFin(ListePopulation liste, Personne personne)
+ListePopulation ajoutListePopulationFin(ListePopulation liste, Individu individu)
 {
     if(estVideListePopulation(liste))
     {
-        liste.pfin = consElementListePopulation(personne);
+        liste.pfin = consElementListePopulation(individu);
         liste.pdebut = liste.pfin;
     }
     else
     {
-        liste.pfin->psuivant = consElementListePopulation(personne);
+        liste.pfin->psuivant = consElementListePopulation(individu);
         liste.pfin = liste.pfin->psuivant;
     }
 
     return liste;
 }
 
-Personne genererPersonne(int id, Mesures mesures, Graphe graphe)
+Individu genererIndividu(int id, Mesures mesures, Graphe graphe)
 {
     int i, j;
     ElementListeArc* temp;
     Allele allele = consAlleleVide();
-    Personne newPersonne = consPersonneVide();
-    newPersonne.id = id;
-    newPersonne.nbAllele = mesures.nbMesuresTotales;
-    newPersonne.genome = (Allele*)malloc(mesures.nbMesuresTotales*(sizeof(Allele)));
-    if(newPersonne.genome == NULL)
+    Individu newIndividu = consIndividuVide();
+    newIndividu.id = id;
+    newIndividu.nbAllele = mesures.nbMesuresTotales;
+    newIndividu.genome = (Allele*)malloc(mesures.nbMesuresTotales*(sizeof(Allele)));
+    if(newIndividu.genome == NULL)
     {
-        perror("Allocation du genome (genererPersonne) impossible");
+        perror("Allocation du genome (genererIndividu) impossible");
         exit(-1);
     }
 
-    for(i = 0; i < newPersonne.nbAllele; i++)
+    for(i = 0; i < newIndividu.nbAllele; i++)
     {
-        newPersonne.genome[i] = consAlleleVide();
+        newIndividu.genome[i] = consAlleleVide();
     }
 
     j = 0;
@@ -102,54 +102,54 @@ Personne genererPersonne(int id, Mesures mesures, Graphe graphe)
             allele.mesure = mesures.tabMesure[i];
             allele.numeroArc = temp->numeroArc;
             allele.actif = rand()%2;
-            newPersonne.genome[j] = allele;
+            newIndividu.genome[j] = allele;
             temp = temp->psuivant;
             j++;
         }
     }
-    newPersonne.score = -1;
-    newPersonne.lenght = -1;
-    newPersonne.budget = -1;
+    newIndividu.score = -1;
+    newIndividu.lenght = -1;
+    newIndividu.budget = -1;
 
-    return newPersonne;
+    return newIndividu;
 }
 
-Personne consPersonneFonctionnel(int nbAllele)
+Individu consIndividuFonctionnel(int nbAllele)
 {
     int i;
-    Personne personne = consPersonneVide();
-    personne.genome = (Allele*)malloc(nbAllele*(sizeof(Allele)));
-    personne.nbAllele = nbAllele;
-    if(personne.genome == NULL)
+    Individu individu = consIndividuVide();
+    individu.genome = (Allele*)malloc(nbAllele*(sizeof(Allele)));
+    individu.nbAllele = nbAllele;
+    if(individu.genome == NULL)
     {
-        perror("Allocation du genome (ConsPersonneFonctionnel) impossible");
+        perror("Allocation du genome (ConsIndividuFonctionnel) impossible");
         exit(-1);
     }
-    for(i = 0; i < personne.nbAllele; i++)
+    for(i = 0; i < individu.nbAllele; i++)
     {
-        personne.genome[i] = consAlleleVide();
+        individu.genome[i] = consAlleleVide();
     }
-    personne.score = -1;
-    personne.lenght = -1;
+    individu.score = -1;
+    individu.lenght = -1;
 
-    return personne;
+    return individu;
 }
 
 /* Affichage */
 
-void afficherPersonne(Personne personne)
+void afficherIndividu(Individu individu)
 {
     int i;
-    printf("Identifiant de l'individu : %d\n", personne.id);
-    printf("Nombre d'alleles : %d\n\n", personne.nbAllele);
-    printf("Score de l'individu : %f\n", personne.score);
-    printf("Longueur de l'individu : %f\n", personne.lenght);
-    printf("Cout de l'individu : %f\n\n", personne.budget);
+    printf("Identifiant de l'individu : %d\n", individu.id);
+    printf("Nombre d'alleles : %d\n\n", individu.nbAllele);
+    printf("Score de l'individu : %f\n", individu.score);
+    printf("Longueur de l'individu : %f\n", individu.lenght);
+    printf("Cout de l'individu : %f\n\n", individu.budget);
 
-    for(i = 0; i < personne.nbAllele; i++)
+    for(i = 0; i < individu.nbAllele; i++)
     {
         printf("Allele numero : %d\n", i);
-        afficherAllele(personne.genome[i]);
+        afficherAllele(individu.genome[i]);
         printf("\n\n");
     }
 }
@@ -177,54 +177,54 @@ void afficherListePopulation(ListePopulation liste)
         ElementListePopulation* temp = liste.pdebut;
         while(temp != NULL)
         {
-            afficherPersonne(temp->personne);
+            afficherIndividu(temp->individu);
             printf("\n------------------------------------------------------\n");
             temp = temp -> psuivant;
         }
     }
 }
 
-void afficherPersonneFinal(Personne personne)
+void afficherIndividuFinal(Individu individu)
 {
     int i;
     ElementListeArc* tempEffi = NULL;
     ElementListeArc* tempArc = NULL;
-    printf("\n\nIdentifiant de l'individu : %d\n", personne.id);
-    printf("Nombre d'alleles : %d\n\n", personne.nbAllele);
-    printf("Score de l'individu : %f\n", personne.score);
-    printf("Longueur de l'individu : %f\n", personne.lenght);
-    printf("Cout de l'individu : %f\n\n", personne.budget);
+    printf("\n\nIdentifiant de l'individu : %d\n", individu.id);
+    printf("Nombre d'alleles : %d\n\n", individu.nbAllele);
+    printf("Score de l'individu : %f\n", individu.score);
+    printf("Longueur de l'individu : %f\n", individu.lenght);
+    printf("Cout de l'individu : %f\n\n", individu.budget);
     printf("\nMesures finales a appliquer :\n");
 
-    for(i = 0; i < personne.nbAllele; i++)
+    for(i = 0; i < individu.nbAllele; i++)
     {
-        if(personne.genome[i].actif)
+        if(individu.genome[i].actif)
         {
-            tempEffi = personne.genome[i].mesure.efficacite.pdebut;
-            tempArc = personne.genome[i].mesure.arcApplicables.pdebut;
-            while(tempArc->numeroArc != personne.genome[i].numeroArc)
+            tempEffi = individu.genome[i].mesure.efficacite.pdebut;
+            tempArc = individu.genome[i].mesure.arcApplicables.pdebut;
+            while(tempArc->numeroArc != individu.genome[i].numeroArc)
             {
                 tempArc = tempArc->psuivant;
                 tempEffi = tempEffi->psuivant;
             }
-            printf("Appliquer la mesure %d sur l'arc %d\n", personne.genome[i].mesure.id, personne.genome[i].numeroArc);
+            printf("Appliquer la mesure %d sur l'arc %d\n", individu.genome[i].mesure.id, individu.genome[i].numeroArc);
         }
     }
 }
 
 /* Utilitaires */
 
-void supprimerPersonne(Personne* personne)
+void supprimerIndividu(Individu* individu)
 {
-    if(personne->genome != NULL)
+    if(individu->genome != NULL)
     {
-        free(personne->genome);
-        personne->genome = NULL;
+        free(individu->genome);
+        individu->genome = NULL;
     }
-    personne->id = -1;
-    personne->nbAllele = -1;
-    personne->score = -1;
-    personne->genome = NULL;
+    individu->id = -1;
+    individu->nbAllele = -1;
+    individu->score = -1;
+    individu->genome = NULL;
 }
 
 bool estVideListePopulation(ListePopulation liste)
@@ -250,7 +250,7 @@ void supprimerListePopulation(ListePopulation* liste)
         while(liste->pdebut != NULL)
         {
             temp = liste->pdebut;
-            supprimerPersonne(&temp->personne);
+            supprimerIndividu(&temp->individu);
             liste->pdebut = liste->pdebut->psuivant;
             free(temp);
         }
@@ -259,20 +259,20 @@ void supprimerListePopulation(ListePopulation* liste)
     liste->pdebut = liste->pfin = NULL;
 }
 
-Personne dupliquerPersonne(Personne personne)
+Individu dupliquerIndividu(Individu individu)
 {
-    Personne clone;
+    Individu clone;
     int i;
-    clone = personne;
-    clone.genome = (Allele*)malloc(personne.nbAllele*(sizeof(Allele)));
+    clone = individu;
+    clone.genome = (Allele*)malloc(individu.nbAllele*(sizeof(Allele)));
     if(clone.genome == NULL)
     {
-        perror("Clone impossible (dupliquerPersonne)");
+        perror("Clone impossible (dupliquerIndividu)");
         exit(-1);
     }
-    for(i = 0; i < personne.nbAllele; i++)
+    for(i = 0; i < individu.nbAllele; i++)
     {
-        clone.genome[i] = personne.genome[i];
+        clone.genome[i] = individu.genome[i];
     }
     return clone;
 }
@@ -284,8 +284,8 @@ Population croisements(Population population, float crossesRate, int idBegin)
 {
     int i, j, k;
     int cross_rate = (int)(ceil(population.taillePopulation*crossesRate/2));
-    Personne fils = consPersonneVide();
-    Personne fille = consPersonneVide();
+    Individu fils = consIndividuVide();
+    Individu fille = consIndividuVide();
     int pere = -1;
     int mere = -1;
     int nbAllele = -1;
@@ -303,11 +303,11 @@ Population croisements(Population population, float crossesRate, int idBegin)
 
     if(population.taillePopulation < 2)
     {
-        perror("La population doit contenir au moins deux personnes (croisements)");
+        perror("La population doit contenir au moins deux individus (croisements)");
         exit(-1);
     }
 
-    nbAllele = population.listePopulation.pdebut->personne.nbAllele;
+    nbAllele = population.listePopulation.pdebut->individu.nbAllele;
 
     for(i = 0; i < cross_rate; i++)
     {
@@ -342,8 +342,8 @@ Population croisements(Population population, float crossesRate, int idBegin)
         cpt = 0;
 
         //On construit les enfants
-        fils = consPersonneFonctionnel(nbAllele);
-        fille = consPersonneFonctionnel(nbAllele);
+        fils = consIndividuFonctionnel(nbAllele);
+        fille = consIndividuFonctionnel(nbAllele);
 
         fils.id = idBegin;
         idBegin++;
@@ -375,16 +375,16 @@ Population croisements(Population population, float crossesRate, int idBegin)
             if(k%2 == 0)
             {
                 //On procède à un croisement
-                fils.genome[cpt] = pPere->personne.genome[position1->numeroArc];
+                fils.genome[cpt] = pPere->individu.genome[position1->numeroArc];
 
-                fille.genome[cpt] = pMere->personne.genome[position2->numeroArc];
+                fille.genome[cpt] = pMere->individu.genome[position2->numeroArc];
             }
             else
             {
                 //Sinon on procède à un autre croisement
-                fils.genome[cpt] = pMere->personne.genome[position1->numeroArc];
+                fils.genome[cpt] = pMere->individu.genome[position1->numeroArc];
 
-                fille.genome[cpt] = pPere->personne.genome[position2->numeroArc];
+                fille.genome[cpt] = pPere->individu.genome[position2->numeroArc];
             }
             cpt++;
 
@@ -426,15 +426,15 @@ Population croisements(Population population, float crossesRate, int idBegin)
 Population mutations(Population population, float mutationRate)
 {
     int i, j, k, n, m, random;
-    Personne* aMuter = NULL;
+    Individu* aMuter = NULL;
     int nbAllele = -1;
-    ListeArc listeTempPersonne = consListeVide();
+    ListeArc listeTempIndividu = consListeVide();
     ListeArc listeTempAlelle = consListeVide();
-    ElementListeArc* positionPersonne = NULL;
+    ElementListeArc* positionIndividu = NULL;
     ElementListeArc* positionAllele = NULL;
-    ElementListeArc* supprimerPersonne = NULL;
+    ElementListeArc* supprimerIndividu = NULL;
     ElementListeArc* supprimerAllele = NULL;
-    ElementListePopulation* pPersonne = NULL;
+    ElementListePopulation* pIndividu = NULL;
 
     if(population.taillePopulation < 1)
     {
@@ -443,34 +443,34 @@ Population mutations(Population population, float mutationRate)
     }
 
     //On récupère le nombre d'alleles
-    nbAllele = population.listePopulation.pdebut->personne.nbAllele;
+    nbAllele = population.listePopulation.pdebut->individu.nbAllele;
 
     //On calcul les taux de mutations
     n = (int)(ceil(population.taillePopulation*mutationRate));
-    m = (int)(ceil(population.listePopulation.pdebut->personne.nbAllele*mutationRate));
+    m = (int)(ceil(population.listePopulation.pdebut->individu.nbAllele*mutationRate));
 
-    //On initialise la liste temporaire des personnes
+    //On initialise la liste temporaire des individus
     for(i = 0; i < population.taillePopulation; i++)
     {
-        listeTempPersonne = ajoutListeFin(listeTempPersonne, i);
+        listeTempIndividu = ajoutListeFin(listeTempIndividu, i);
     }
 
-    //Boucle qui choisit les personnes de manière aléatoire
+    //Boucle qui choisit les individus de manière aléatoire
     for(i = 0; i < n; i++)
     {
-        //On recuperer la personne qui doit muter
+        //On recuperer l'individu qui doit muter
         random = random_number(0, population.taillePopulation - i - 1);
-        pPersonne = population.listePopulation.pdebut;
-        positionPersonne = supprimerPersonne = listeTempPersonne.pdebut;
+        pIndividu = population.listePopulation.pdebut;
+        positionIndividu = supprimerIndividu = listeTempIndividu.pdebut;
         for(j = 0; j < random; j++)
         {
-            supprimerPersonne = positionPersonne;
-            positionPersonne = positionPersonne->psuivant;
-            pPersonne = pPersonne->psuivant;
+            supprimerIndividu = positionIndividu;
+            positionIndividu = positionIndividu->psuivant;
+            pIndividu = pIndividu->psuivant;
         }
 
-        //On créé un pointeur sur elle
-        aMuter = &pPersonne->personne;
+        //On créé un pointeur dessus
+        aMuter = &pIndividu->individu;
 
         //On initialise la liste sans doublon pour les alleles
         for(j = 0; j < nbAllele; j++)
@@ -507,89 +507,89 @@ Population mutations(Population population, float mutationRate)
         supprimerListe(&listeTempAlelle);
 
         //On supprime le maillon
-        if(positionPersonne == listeTempPersonne.pdebut)
+        if(positionIndividu == listeTempIndividu.pdebut)
         {
-            listeTempPersonne.pdebut = listeTempPersonne.pdebut->psuivant;
+            listeTempIndividu.pdebut = listeTempIndividu.pdebut->psuivant;
         }
         else
         {
-            supprimerPersonne->psuivant = positionPersonne->psuivant;
+            supprimerIndividu->psuivant = positionIndividu->psuivant;
         }
-        free(positionPersonne);
-        positionPersonne = supprimerPersonne = NULL;
+        free(positionIndividu);
+        positionIndividu = supprimerIndividu = NULL;
     }
-    supprimerListe(&listeTempPersonne);
+    supprimerListe(&listeTempIndividu);
     return population;
 }
 
-Graphe appliquerPersonne(Personne personne, Graphe graphe)
+Graphe appliquerIndividu(Individu individu, Graphe graphe)
 {
     int i;
     ElementListeArc* tempEffi = NULL;
     ElementListeArc* tempArc = NULL;
     int numArcApplicable;
-    for(i = 0; i < personne.nbAllele; i++)
+    for(i = 0; i < individu.nbAllele; i++)
     {
-        if(personne.genome[i].actif)
+        if(individu.genome[i].actif)
         {
-            numArcApplicable = personne.genome[i].numeroArc;
-            tempEffi = personne.genome[i].mesure.efficacite.pdebut;
-            tempArc = personne.genome[i].mesure.arcApplicables.pdebut;
+            numArcApplicable = individu.genome[i].numeroArc;
+            tempEffi = individu.genome[i].mesure.efficacite.pdebut;
+            tempArc = individu.genome[i].mesure.arcApplicables.pdebut;
             while(numArcApplicable != tempArc->numeroArc)
             {
                 tempArc = tempArc->psuivant;
                 tempEffi = tempEffi->psuivant;
             }
-            graphe.tabArcs[personne.genome[i].numeroArc].ponderation += tempEffi->numeroArc;
-            graphe.tabArcs[personne.genome[i].numeroArc].cout += personne.genome[i].mesure.cout;
+            graphe.tabArcs[individu.genome[i].numeroArc].ponderation += tempEffi->numeroArc;
+            graphe.tabArcs[individu.genome[i].numeroArc].cout += individu.genome[i].mesure.cout;
         }
     }
     return graphe;
 }
-Graphe retirerPersonne(Personne personne, Graphe graphe)
+Graphe retirerIndividu(Individu individu, Graphe graphe)
 {
     int i;
     ElementListeArc* tempEffi = NULL;
     ElementListeArc* tempArc = NULL;
     int numArcApplicable;
-    for(i = 0; i < personne.nbAllele; i++)
+    for(i = 0; i < individu.nbAllele; i++)
     {
-        if(personne.genome[i].actif)
+        if(individu.genome[i].actif)
         {
-            numArcApplicable = personne.genome[i].numeroArc;
-            tempEffi = personne.genome[i].mesure.efficacite.pdebut;
-            tempArc = personne.genome[i].mesure.arcApplicables.pdebut;
+            numArcApplicable = individu.genome[i].numeroArc;
+            tempEffi = individu.genome[i].mesure.efficacite.pdebut;
+            tempArc = individu.genome[i].mesure.arcApplicables.pdebut;
             while(numArcApplicable != tempArc->numeroArc)
             {
                 tempArc = tempArc->psuivant;
                 tempEffi = tempEffi->psuivant;
             }
-            graphe.tabArcs[personne.genome[i].numeroArc].ponderation -= tempEffi->numeroArc;
-            graphe.tabArcs[personne.genome[i].numeroArc].cout -= personne.genome[i].mesure.cout;
+            graphe.tabArcs[individu.genome[i].numeroArc].ponderation -= tempEffi->numeroArc;
+            graphe.tabArcs[individu.genome[i].numeroArc].cout -= individu.genome[i].mesure.cout;
         }
     }
     return graphe;
 }
 
-float score(GeneticSolver geneticSolver, Personne personne)
+float score(GeneticSolver geneticSolver, Individu individu)
 {
-    return geneticSolver.ratioPriority * personne.lenght + (1 - geneticSolver.ratioPriority) * (100 - personne.budget / geneticSolver.targetBudget * 100);
+    return geneticSolver.ratioPriority * individu.lenght + (1 - geneticSolver.ratioPriority) * (100 - individu.budget / geneticSolver.targetBudget * 100);
 }
 
-Personne majPersonne(GeneticSolver geneticSolver, Personne personne)
+Individu majIndividu(GeneticSolver geneticSolver, Individu individu)
 {
     int i, somme;
-    if(personne.genome != NULL)
+    if(individu.genome != NULL)
     {
         somme = 0;
-        for(i = 0; i < personne.nbAllele; i++)
+        for(i = 0; i < individu.nbAllele; i++)
         {
-            somme += personne.genome[i].actif * personne.genome[i].mesure.cout;
+            somme += individu.genome[i].actif * individu.genome[i].mesure.cout;
         }
-        personne.budget = somme;
+        individu.budget = somme;
     }
-    personne.score = score(geneticSolver, personne);
-    return personne;
+    individu.score = score(geneticSolver, individu);
+    return individu;
 }
 
 Population selection(Population population, int n)
@@ -618,21 +618,21 @@ Population selection(Population population, int n)
         max = 0;
         for(j = 0; j < population.taillePopulation; j++)
         {
-            if(tabTemp[j]->personne.score > scoreMax && tabMarq[j] == false)
+            if(tabTemp[j]->individu.score > scoreMax && tabMarq[j] == false)
             {
                 max = j;
-                scoreMax = tabTemp[j]->personne.score;
+                scoreMax = tabTemp[j]->individu.score;
             }
         }
         tabMarq[max] = true;
-        newPopulation = ajoutListePopulationFin(newPopulation, tabTemp[max]->personne);
+        newPopulation = ajoutListePopulationFin(newPopulation, tabTemp[max]->individu);
     }
 
     for(i = 0; i < n; i++)
     {
         if(tabMarq[i] == false)
         {
-            supprimerPersonne(&tabTemp[i]->personne);
+            supprimerIndividu(&tabTemp[i]->individu);
             free(tabTemp[i]);
         }
     }
@@ -640,15 +640,15 @@ Population selection(Population population, int n)
     return population;
 }
 
-Personne selectionONE(Population population)
+Individu selectionONE(Population population)
 {
     ElementListePopulation* temp = population.listePopulation.pdebut;
-    Personne garde = temp->personne;
+    Individu garde = temp->individu;
     while(temp != NULL)
     {
-        if(temp->personne.score > garde.score)
+        if(temp->individu.score > garde.score)
         {
-            garde = temp->personne;
+            garde = temp->individu;
         }
         temp = temp->psuivant;
     }
