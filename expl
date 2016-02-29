@@ -1,0 +1,10 @@
+Les algorithmes principaux sont contenus dans "genetique.c"
+Le reste n'est qu'un ensemble d'objets classiques :
+  graphe = 
+  liste =
+  mesure = mesure de sécurité implémentée, qui s'applique sur 1 ou + arcs du graphe (c'est son "efficacité")
+    L'objet a cependant un coût (de mise en application de la mesure).
+  utils = méthodes utiles communes.
+  main = interface.
+  
+Tout commence à la ligne 281 de genetique.c
