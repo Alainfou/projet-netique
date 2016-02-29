@@ -140,11 +140,11 @@ Personne consPersonneFonctionnel(int nbAllele)
 void afficherPersonne(Personne personne)
 {
     int i;
-    printf("Identifiant de la personne : %d\n", personne.id);
+    printf("Identifiant de l'individu : %d\n", personne.id);
     printf("Nombre d'alleles : %d\n\n", personne.nbAllele);
-    printf("Score de la personne : %f\n", personne.score);
-    printf("Longueur de la personne : %f\n", personne.lenght);
-    printf("Cout de la personne : %f\n\n", personne.budget);
+    printf("Score de l'individu : %f\n", personne.score);
+    printf("Longueur de l'individu : %f\n", personne.lenght);
+    printf("Cout de l'individu : %f\n\n", personne.budget);
 
     for(i = 0; i < personne.nbAllele; i++)
     {
@@ -189,11 +189,11 @@ void afficherPersonneFinal(Personne personne)
     int i;
     ElementListeArc* tempEffi = NULL;
     ElementListeArc* tempArc = NULL;
-    printf("\n\nIdentifiant de la personne : %d\n", personne.id);
+    printf("\n\nIdentifiant de l'individu : %d\n", personne.id);
     printf("Nombre d'alleles : %d\n\n", personne.nbAllele);
-    printf("Score de la personne : %f\n", personne.score);
-    printf("Longueur de la personne : %f\n", personne.lenght);
-    printf("Cout de la personne : %f\n\n", personne.budget);
+    printf("Score de l'individu : %f\n", personne.score);
+    printf("Longueur de l'individu : %f\n", personne.lenght);
+    printf("Cout de l'individu : %f\n\n", personne.budget);
     printf("\nMesures finales a appliquer :\n");
 
     for(i = 0; i < personne.nbAllele; i++)
